@@ -1,3 +1,4 @@
+# _*_ coding:utf-8 _*_
 """
 Django settings for MxOnline project.
 
@@ -28,9 +29,13 @@ SECRET_KEY = 'b$9v--@-$r4t_88%++gn7i6!0yajm^bki1wtt4e_qq)ijey0s+'
 DEBUG = True
 
 ALLOWED_HOSTS = []
-
+# 自定义auth验证方法  就是选择用name登陆还是email登陆还是其他登陆
+AUTHENTICATION_BACKENDS = (
+    'users.views.CustomBackend',
+)
 
 # Application definition
+
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -133,3 +138,6 @@ USE_TZ = False
 # https://docs.djangoproject.com/en/1.9/howto/static-files/
 
 STATIC_URL = '/static/'
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static'),
+]
