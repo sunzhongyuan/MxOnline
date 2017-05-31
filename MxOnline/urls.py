@@ -21,11 +21,11 @@ from django.views.generic import TemplateView   # 处理静态页面转换为vie
 
 import xadmin
 
-from users.views import user_login
+from users.views import LoginView
 
 urlpatterns = [
     url(r'^xadmin/', xadmin.site.urls),
     # 将静态文件转换为view 不用自己写view函数
     url('^$', TemplateView.as_view(template_name='index.html'), name='index'),
-    url(r'^login/$', user_login, name='login')
+    url(r'^login/$', LoginView.as_view(), name='login')
 ]
