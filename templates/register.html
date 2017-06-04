@@ -81,7 +81,7 @@
             <div class="hd-login clearfix">
                 <a class="index-logo" href="index.html"></a>
                 <h1>用户注册</h1>
-                <a class="index-font" href="index.html">回到首页</a>
+                <a class="index-font" href="{% url 'index' %}">回到首页</a>
             </div>
             <div class="fl slide">
                 <div class="imgslide">
@@ -148,7 +148,7 @@
                             {{ register_form.captcha }}
 {#                            <img src="/captcha/image/2f3f82e5f7a054bf5caa93b9b0bb6cc308fb7011/" alt="captcha" class="captcha" /> <input id="id_captcha_0" name="captcha_0" type="hidden" value="2f3f82e5f7a054bf5caa93b9b0bb6cc308fb7011" /> <input autocomplete="off" id="id_captcha_1" name="captcha_1" type="text" />#}
                         </div>
-                        <div class="error btns" id="jsEmailTips">{% for error in register_form.errors.values %}{{ error }}{% endfor %}</div>
+                        <div class="error btns" id="jsEmailTips">{% for error in register_form.errors.values %}{{ error }}{% endfor %}{{ msg }}</div>
                         <div class="auto-box marb8">
                         </div>
                         <input class="btn btn-green" id="jsEmailRegBtn" type="submit" value="注册并登录" />

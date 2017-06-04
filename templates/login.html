@@ -52,7 +52,7 @@
             <div class="hd-login clearfix">
                 <a class="index-logo" href="index.html"></a>
                 <h1>用户登录</h1>
-                <a class="index-font" href="index.html">回到首页</a>
+                <a class="index-font" href="{% url 'index' %}">回到首页</a>
             </div>
             <div class="fl slide">
                 <div class="imgslide">
@@ -82,7 +82,7 @@
                     <div class="error btns login-form-tips" id="jsLoginTips">{% for error in login_form.errors.values %}{{ error }}{% endfor %}{{ msg }}</div>
                     <div class="auto-box marb38">
 
-                        <a class="fr" href="forgetpwd.html">忘记密码？</a>
+                        <a class="fr" href="{% url 'forget' %}">忘记密码？</a>
                     </div>
                     <input class="btn btn-green" id="jsLoginBtn" type="submit" value="立即登录 > " />
 

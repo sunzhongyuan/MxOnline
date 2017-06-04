@@ -21,7 +21,7 @@ from django.views.generic import TemplateView   # 处理静态页面转换为vie
 
 import xadmin
 
-from users.views import LoginView, RegisterView, ActiveView
+from users.views import LoginView, RegisterView, ActiveView, ForgetView, ResetView, ModifyPwdView
 
 urlpatterns = [
     url(r'^xadmin/', xadmin.site.urls),
@@ -30,5 +30,8 @@ urlpatterns = [
     url(r'^login/$', LoginView.as_view(), name='login'),
     url(r'^register/$', RegisterView.as_view(), name='register'),
     url(r'^captcha/', include('captcha.urls')),
-    url(r'^active/(?P<active_code>.*)/$', ActiveView.as_view(), name='user_active')
+    url(r'^active/(?P<active_code>.*)/$', ActiveView.as_view(), name='user_active'),
+    url(r'^forget/$', ForgetView.as_view(), name='forget'),
+    url(r'^reset/(?P<active_code>.*)/$', ResetView.as_view(), name='reset'),
+    url(r'^modify/$', ModifyPwdView.as_view(), name='modify_pwd'),
 ]

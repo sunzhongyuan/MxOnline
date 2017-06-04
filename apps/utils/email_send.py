@@ -33,11 +33,20 @@ def send_register_email(email, send_type='register'):
     email_record.email = email
     email_record.save()     # 将激活码保存到数据库 用来验证用户送来的激活码时候合法
 
-    email_title = 'zy在线激活链接'
-    email_body = '请点击下面链接激活您的账号：http://127.0.0.1:8000/active/{0}'.format(code)
+    if send_type == 'register':
+        email_title = 'zy在线激活链接'
+        email_body = '请点击下面链接激活您的账号：http://127.0.0.1:8000/active/{0}'.format(code)
 
-    # 发送邮件 send_mail这个函数需要预先配置用来发送邮件的邮箱 配置在settings.py文件中
-    send_status = send_mail(email_title, email_body, EMAIL_FROM, [email])
-    if send_status:
-        pass
+        # 发送邮件 send_mail这个函数需要预先配置用来发送邮件的邮箱 配置在settings.py文件中
+        send_status = send_mail(email_title, email_body, EMAIL_FROM, [email])
+        if send_status:
+            pass
 
+    if send_type == 'forget':
+        email_title = 'zy在线重置密码链接'
+        email_body = '请点击下面链接重置您的账号：http://127.0.0.1:8000/reset/{0}'.format(code)
+
+        # 发送邮件 send_mail这个函数需要预先配置用来发送邮件的邮箱 配置在settings.py文件中
+        send_status = send_mail(email_title, email_body, EMAIL_FROM, [email])
+        if send_status:
+            pass
