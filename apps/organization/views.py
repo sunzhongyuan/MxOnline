@@ -1,10 +1,12 @@
 # _*_ coding:utf-8 _*_
 from django.shortcuts import render
 from django.views.generic.base import View
+from django.http import HttpResponse
 
 from pure_pagination import Paginator, EmptyPage, PageNotAnInteger
 
 from .models import CityDict, CourseOrg
+from .forms import UserAskForm
 # Create your views here.
 
 
@@ -56,4 +58,15 @@ class OrgView(View):
             'sort': sort,
             'org_hot': org_hot,
         })
+
+
+class AddUserAskView(View):
+    def post(self, request):
+        userask_form = UserAskForm(request.POST)    # 实例化modelform
+        if userask_form.is_valid():
+            user_ask = userask_form.save(commit=True)   # model form可以直接save 不用生成一个model然后再model.save()
+            # HttpResponse返回特定的格式 content_type用来定义为json格式
+            return HttpResponse('{"status":"success"}', content_type='application/json')
+        else:
+            return HttpResponse('{"status":"fail", "msg":"输入错误"}', content_type='application/json')
 
