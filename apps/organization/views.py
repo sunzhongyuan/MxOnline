@@ -70,3 +70,60 @@ class AddUserAskView(View):
         else:
             return HttpResponse('{"status":"fail", "msg":"输入错误"}', content_type='application/json')
 
+
+class OrgHomeView(View):
+    """
+    机构首页 展示机构的部分课程和部分讲师和机构介绍
+    """
+    def get(self, request, org_id):
+        course_org = CourseOrg.objects.get(id=int(org_id))  # 根据机构列表页传过来的机构id 获取该机构信息
+        # django的ORM提供了根据外键获取外键表信息 比如机构表有一个外键course 可以直接用course_set获取course表信息
+        all_courses = course_org.course_set.all()[:3]   # 根据外键获取该机构的所有课程信息
+        all_teachers = course_org.teacher_set.all()[:1]     # 根据外键获取该机构的所有教师信息
+        return render(request, 'org-detail-homepage.html', {
+            'all_courses': all_courses,
+            'all_teachers': all_teachers,
+            'course_org': course_org,
+            'org_detail': 'home',
+        })
+
+
+class OrgCourseView(View):
+    """
+    机构课程 展示机构的所有课程
+    """
+    def get(self, request, org_id):
+        course_org = CourseOrg.objects.get(id=int(org_id))  # 根据机构列表页传过来的机构id 获取该机构信息
+        # django的ORM提供了根据外键获取外键表信息 比如机构表有一个外键course 可以直接用course_set获取course表信息
+        all_courses = course_org.course_set.all()   # 根据外键获取该机构的所有课程信息
+        return render(request, 'org-detail-course.html', {
+            'all_courses': all_courses,
+            'course_org': course_org,
+            'org_detail': 'course',
+        })
+
+
+class OrgDescView(View):
+    """
+    机构介绍
+    """
+    def get(self, request, org_id):
+        course_org = CourseOrg.objects.get(id=int(org_id))  # 根据机构列表页传过来的机构id 获取该机构信息
+        return render(request, 'org-detail-desc.html', {
+            'course_org': course_org,
+            'org_detail': 'desc',
+        })
+
+
+class OrgTeacherView(View):
+    """
+    机构讲师
+    """
+    def get(self, request, org_id):
+        course_org = CourseOrg.objects.get(id=int(org_id))  # 根据机构列表页传过来的机构id 获取该机构信息
+        all_teachers = course_org.teacher_set.all()    # 根据外键获取该机构的所有教师信息
+        return render(request, 'org-detail-teachers.html', {
+            'course_org': course_org,
+            'all_teachers': all_teachers,
+            'org_detail': 'teacher',
+        })
