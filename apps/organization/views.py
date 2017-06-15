@@ -7,6 +7,7 @@ from pure_pagination import Paginator, EmptyPage, PageNotAnInteger
 
 from .models import CityDict, CourseOrg
 from .forms import UserAskForm
+from operation.models import UserFavorite
 # Create your views here.
 
 
@@ -80,11 +81,18 @@ class OrgHomeView(View):
         # django的ORM提供了根据外键获取外键表信息 比如机构表有一个外键course 可以直接用course_set获取course表信息
         all_courses = course_org.course_set.all()[:3]   # 根据外键获取该机构的所有课程信息
         all_teachers = course_org.teacher_set.all()[:1]     # 根据外键获取该机构的所有教师信息
+
+        is_fav = False
+        if request.user.is_authenticated():
+            if UserFavorite.objects.filter(user=request.user, fav_id=org_id, fav_type=2):
+                is_fav = True
+
         return render(request, 'org-detail-homepage.html', {
             'all_courses': all_courses,
             'all_teachers': all_teachers,
             'course_org': course_org,
             'org_detail': 'home',
+            'is_fav': is_fav,
         })
 
 
@@ -96,10 +104,17 @@ class OrgCourseView(View):
         course_org = CourseOrg.objects.get(id=int(org_id))  # 根据机构列表页传过来的机构id 获取该机构信息
         # django的ORM提供了根据外键获取外键表信息 比如机构表有一个外键course 可以直接用course_set获取course表信息
         all_courses = course_org.course_set.all()   # 根据外键获取该机构的所有课程信息
+
+        is_fav = False
+        if request.user.is_authenticated():
+            if UserFavorite.objects.filter(user=request.user, fav_id=org_id, fav_type=2):
+                is_fav = True
+
         return render(request, 'org-detail-course.html', {
             'all_courses': all_courses,
             'course_org': course_org,
             'org_detail': 'course',
+            'is_fav': is_fav,
         })
 
 
@@ -109,9 +124,16 @@ class OrgDescView(View):
     """
     def get(self, request, org_id):
         course_org = CourseOrg.objects.get(id=int(org_id))  # 根据机构列表页传过来的机构id 获取该机构信息
+
+        is_fav = False
+        if request.user.is_authenticated():
+            if UserFavorite.objects.filter(user=request.user, fav_id=org_id, fav_type=2):
+                is_fav = True
+
         return render(request, 'org-detail-desc.html', {
             'course_org': course_org,
             'org_detail': 'desc',
+            'is_fav': is_fav,
         })
 
 
@@ -122,8 +144,51 @@ class OrgTeacherView(View):
     def get(self, request, org_id):
         course_org = CourseOrg.objects.get(id=int(org_id))  # 根据机构列表页传过来的机构id 获取该机构信息
         all_teachers = course_org.teacher_set.all()    # 根据外键获取该机构的所有教师信息
+
+        is_fav = False
+        if request.user.is_authenticated():
+            if UserFavorite.objects.filter(user=request.user, fav_id=org_id, fav_type=2):
+                is_fav = True
+
         return render(request, 'org-detail-teachers.html', {
             'course_org': course_org,
             'all_teachers': all_teachers,
             'org_detail': 'teacher',
+            'is_fav': is_fav,
         })
+
+
+class OrgFavView(View):
+    """
+    收藏功能
+    """
+    def post(self, request):
+        if not request.user.is_authenticated():
+            return HttpResponse('{"status":"fail", "msg":"用户未登录"}', content_type='application/json')
+        fav_id = request.POST.get('fav_id', 0)
+        fav_type = request.POST.get('fav_type', 0)
+        user_fav = UserFavorite.objects.filter(user=request.user, fav_id=fav_id, fav_type=fav_type)
+        if user_fav:
+            user_fav.delete()
+            return HttpResponse('{"status":"success", "msg":"收藏"}', content_type='application/json')
+        else:
+            user_fav = UserFavorite()
+            user_fav.user = request.user
+            user_fav.fav_type = fav_type
+            user_fav.fav_id = fav_id
+            user_fav.save()
+            return HttpResponse('{"status":"success", "msg":"已收藏"}', content_type='application/json')
+
+
+
+
+
+
+
+
+
+
+
+
+
+
