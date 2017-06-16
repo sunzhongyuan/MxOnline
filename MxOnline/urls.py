@@ -45,4 +45,7 @@ urlpatterns = [
 
     # 导入org的urls文件
     url(r'^org/', include('organization.urls', namespace='org')),
+
+    # 导入course的urls文件
+    url(r'^course/', include('courses.urls', namespace='course')),
 ]

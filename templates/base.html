@@ -77,16 +77,16 @@
 				<div class="nav">
 					<div class="wp">
 						<ul>
-							<li ><a href="index.html">首页</a></li>
-							<li >
-								<a href="course-list.html">
+							<li ><a href="{% url 'index' %}">首页</a></li>
+							<li {% if type == 'course' %}class="active"{% endif %}>
+								<a href="{% url 'course:list' %}">
 									公开课<img class="hot" src="{% static 'images/nav_hot.png' %}">
 								</a>
 							</li>
-							<li >
+							<li {% if type == 'teacher' %}class="active"{% endif %}>
 								<a href="teachers-list.html">授课教师</a>
 							</li>
-							<li class="active" ><a href="{% url 'org:list' %}">授课机构</a></li>
+							<li {% if type == 'org' %}class="active"{% endif %} ><a href="{% url 'org:list' %}">授课机构</a></li>
 						</ul>
 					</div>
 				</div>
@@ -96,16 +96,18 @@
     </header>
 </section>
 <!--crumbs start-->
-{% block custom_break %}
-<section>
-    <div class="wp">
-        <ul  class="crumbs">
-            <li><a href="index.html">首页</a>></li>
 
-        </ul>
-    </div>
-</section>
+{% block custom_break %}
+{#<section>#}
+{#    <div class="wp">#}
+{#        <ul  class="crumbs">#}
+{#            <li><a href="index.html">首页</a>></li>#}
+{##}
+{#        </ul>#}
+{#    </div>#}
+{#</section>#}
 {% endblock %}
+
 {% block content %}
 
 {% endblock %}
