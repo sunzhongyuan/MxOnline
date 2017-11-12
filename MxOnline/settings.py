@@ -16,6 +16,7 @@ import sys
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+# 建立apps存放多个app，但是import时要多写一层apps，不写apps可以将apps的路径加入到PATH
 sys.path.insert(0,os.path.join(BASE_DIR, 'apps'))
 sys.path.insert(0,os.path.join(BASE_DIR, 'extra_apps'))
 
@@ -37,6 +38,7 @@ AUTHENTICATION_BACKENDS = (
 # Application definition
 
 
+# 新增的app要加到这里
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -69,6 +71,7 @@ MIDDLEWARE_CLASSES = [
 
 ROOT_URLCONF = 'MxOnline.urls'
 
+# 这里配置了html文件存放的路径
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -92,7 +95,7 @@ WSGI_APPLICATION = 'MxOnline.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/1.9/ref/settings/#databases
-
+# 这里配置连接数据库的信息
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
@@ -128,7 +131,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'zh-hans'
 
-TIME_ZONE = 'Asia/BeiJing'
+TIME_ZONE = 'Asia/Shanghai'
 
 USE_I18N = True
 
@@ -139,7 +142,7 @@ USE_TZ = False
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.9/howto/static-files/
-
+# 指定静态文件路径 需手动添加STATICFILES_DIRS
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
